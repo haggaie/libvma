@@ -679,6 +679,9 @@ void mce_sys_var::get_env_params()
 	if ((env_ptr = getenv(SYS_VAR_RX_SW_CSUM)) != NULL) {
 		rx_sw_csum = atoi(env_ptr) ? true : false;
 	}
+	if ((env_ptr = getenv(SYS_VAR_RX_NO_CSUM)) != NULL) {
+		rx_no_csum = atoi(env_ptr) ? true : false;
+	}
 
 	//The following 2 params were replaced by SYS_VAR_RX_UDP_POLL_OS_RATIO
 	if ((env_ptr = getenv(SYS_VAR_RX_POLL_OS_RATIO)) != NULL) {

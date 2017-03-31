@@ -169,6 +169,7 @@ inline uint32_t cq_mgr::process_recv_queue(void* pv_fd_ready_array)
 
 cq_mgr::cq_mgr(ring_simple* p_ring, ib_ctx_handler* p_ib_ctx_handler, int cq_size, struct ibv_comp_channel* p_comp_event_channel, bool is_rx) :
 		m_p_ring(p_ring), m_p_ib_ctx_handler(p_ib_ctx_handler), m_b_is_rx(is_rx), m_b_sysvar_is_rx_sw_csum_on(safe_mce_sys().rx_sw_csum),
+                m_b_sysvar_no_csum(safe_mce_sys().rx_no_csum),
 		m_comp_event_channel(p_comp_event_channel), m_n_sysvar_rx_prefetch_bytes_before_poll(safe_mce_sys().rx_prefetch_bytes_before_poll),
 		m_n_sysvar_rx_prefetch_bytes(safe_mce_sys().rx_prefetch_bytes), m_n_sysvar_rx_num_wr_to_post_recv(safe_mce_sys().rx_num_wr_to_post_recv),
 		m_n_sysvar_cq_poll_batch_max(safe_mce_sys().cq_poll_batch_max), m_n_sysvar_qp_compensation_level(safe_mce_sys().qp_compensation_level),
@@ -535,7 +536,9 @@ mem_buf_desc_t* cq_mgr::process_cq_element_rx(vma_ibv_wc* p_wce)
 	bool bad_wce = p_wce->status != IBV_WC_SUCCESS;
 	bool is_rx_sw_csum_need;
 
-	if  (m_b_sysvar_is_rx_sw_csum_on) {
+        if (m_b_sysvar_no_csum) {
+                is_rx_sw_csum_need = false;
+        } else if (m_b_sysvar_is_rx_sw_csum_on) {
 		// no changes in bad_wce
 		is_rx_sw_csum_need = !(m_b_is_rx_hw_csum_on && vma_wc_rx_hw_csum_ok(*p_wce));
 	} else {

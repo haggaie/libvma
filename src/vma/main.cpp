@@ -498,6 +498,7 @@ void print_vma_global_settings()
 
 	VLOG_PARAM_NUMBER("Rx UDP HW TS Conversion", safe_mce_sys().rx_udp_hw_ts_conversion, MCE_DEFAULT_RX_UDP_HW_TS_CONVERSION, SYS_VAR_RX_UDP_HW_TS_CONVERSION);
 	VLOG_PARAM_NUMBER("Rx SW CSUM", safe_mce_sys().rx_sw_csum, MCE_DEFUALT_RX_SW_CSUM, SYS_VAR_RX_SW_CSUM);
+	VLOG_PARAM_NUMBER("Rx ignore CSUM", safe_mce_sys().rx_no_csum, MCE_DEFUALT_RX_NO_CSUM, SYS_VAR_RX_NO_CSUM);
 	if (safe_mce_sys().rx_poll_yield_loops) {
 		VLOG_PARAM_NUMBER("Rx Poll Yield", safe_mce_sys().rx_poll_yield_loops, MCE_DEFAULT_RX_POLL_YIELD, SYS_VAR_RX_POLL_YIELD);
 	}

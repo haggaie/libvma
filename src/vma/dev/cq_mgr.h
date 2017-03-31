@@ -174,6 +174,7 @@ private:
 	bool				m_b_is_rx;
 	bool				m_b_is_rx_hw_csum_on;
 	const bool			m_b_sysvar_is_rx_sw_csum_on;
+        const bool                      m_b_sysvar_no_csum;
 	struct ibv_comp_channel*	m_comp_event_channel;
 	struct ibv_cq*			m_p_ibv_cq;
 	bool				m_b_notification_armed;

@@ -322,6 +322,7 @@ struct mce_sys_var {
 	uint32_t 	rx_udp_poll_os_ratio;
 	ts_conversion_mode_t	rx_udp_hw_ts_conversion;
 	bool 		rx_sw_csum;
+        bool            rx_no_csum;
 	uint32_t 	rx_poll_yield_loops;
 	uint32_t 	rx_skip_os_fd_check;
 	uint32_t 	rx_ready_byte_min_limit;
@@ -451,6 +452,7 @@ extern mce_sys_var & safe_mce_sys();
 #define SYS_VAR_RX_NUM_POLLS_INIT			"VMA_RX_POLL_INIT"
 #define SYS_VAR_RX_UDP_POLL_OS_RATIO			"VMA_RX_UDP_POLL_OS_RATIO"
 #define SYS_VAR_RX_SW_CSUM				"VMA_RX_SW_CSUM"
+#define SYS_VAR_RX_NO_CSUM				"VMA_RX_NO_CSUM"
 #define SYS_VAR_RX_UDP_HW_TS_CONVERSION			"VMA_RX_UDP_HW_TS_CONVERSION"
 // The following 2 params were replaced by VMA_RX_UDP_POLL_OS_RATIO
 #define SYS_VAR_RX_POLL_OS_RATIO			"VMA_RX_POLL_OS_RATIO"
@@ -561,6 +563,7 @@ extern mce_sys_var & safe_mce_sys();
 #define MCE_DEFAULT_RX_UDP_POLL_OS_RATIO		(100)
 #define MCE_DEFAULT_RX_UDP_HW_TS_CONVERSION		(TS_CONVERSION_MODE_SYNC)
 #define MCE_DEFUALT_RX_SW_CSUM				(true)
+#define MCE_DEFUALT_RX_NO_CSUM				(false)
 #define MCE_DEFAULT_RX_POLL_YIELD			(0)
 #define MCE_DEFAULT_RX_BYTE_MIN_LIMIT			(65536)
 #define MCE_DEFAULT_RX_PREFETCH_BYTES			(256)
