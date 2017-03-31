@@ -83,6 +83,7 @@ cq_mgr::cq_mgr(ring_simple* p_ring, ib_ctx_handler* p_ib_ctx_handler, int cq_siz
 	,m_n_wce_counter(0)
 	,m_b_was_drained(false)
 	,m_b_is_rx_hw_csum_on(false)
+	,m_b_sysvar_no_csum(safe_mce_sys().rx_no_csum)
 	,m_n_sysvar_cq_poll_batch_max(safe_mce_sys().cq_poll_batch_max)
 	,m_n_sysvar_progress_engine_wce_max(safe_mce_sys().progress_engine_wce_max)
 	,m_p_cq_stat(&m_cq_stat_static) // use local copy of stats by default (on rx cq get shared memory stats)
@@ -506,7 +507,7 @@ mem_buf_desc_t* cq_mgr::process_cq_element_rx(vma_ibv_wc* p_wce)
 		p_mem_buf_desc->p_prev_desc = NULL;
 	}
 
-	p_mem_buf_desc->rx.is_sw_csum_need = !(m_b_is_rx_hw_csum_on && vma_wc_rx_hw_csum_ok(*p_wce));
+	p_mem_buf_desc->rx.is_sw_csum_need = !m_b_sysvar_no_csum && !(m_b_is_rx_hw_csum_on && vma_wc_rx_hw_csum_ok(*p_wce));
 
 	if (likely(vma_wc_opcode(*p_wce) & VMA_IBV_WC_RECV)) {
 		// Save recevied total bytes

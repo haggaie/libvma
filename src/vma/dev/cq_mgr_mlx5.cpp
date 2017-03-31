@@ -197,7 +197,7 @@ inline void cq_mgr_mlx5::cqe64_to_mem_buff_desc(struct mlx5_cqe64 *cqe, mem_buf_
 			p_rx_wc_buf_desc->sz_data = ntohl(cqe->byte_cnt);
 			p_rx_wc_buf_desc->rx.hw_raw_timestamp = ntohll(cqe->timestamp);
 			p_rx_wc_buf_desc->rx.flow_tag_id      = vma_get_flow_tag(cqe);
-			p_rx_wc_buf_desc->rx.is_sw_csum_need = !(m_b_is_rx_hw_csum_on &&
+			p_rx_wc_buf_desc->rx.is_sw_csum_need = !m_b_sysvar_no_csum && !(m_b_is_rx_hw_csum_on &&
 					(cqe->hds_ip_ext & MLX5_CQE_L4_OK) && (cqe->hds_ip_ext & MLX5_CQE_L3_OK));
 			return;
 		}
@@ -506,7 +506,7 @@ int cq_mgr_mlx5::poll_and_process_element_rx(uint64_t* p_cq_poll_sn, void* pv_fd
 				++m_qp->m_mlx5_qp.rq.tail;
 				m_rx_hot_buffer->sz_data = ntohl(cqe->byte_cnt);
 				m_rx_hot_buffer->rx.flow_tag_id = vma_get_flow_tag(cqe);
-				m_rx_hot_buffer->rx.is_sw_csum_need = !(m_b_is_rx_hw_csum_on &&
+				m_rx_hot_buffer->rx.is_sw_csum_need = !m_b_sysvar_no_csum && !(m_b_is_rx_hw_csum_on &&
 						(cqe->hds_ip_ext & MLX5_CQE_L4_OK) && (cqe->hds_ip_ext & MLX5_CQE_L3_OK));
 
 				if (unlikely(++m_qp_rec.debt >= (int)m_n_sysvar_rx_num_wr_to_post_recv)) {
@@ -589,7 +589,7 @@ int cq_mgr_mlx5::poll_and_process_element_rx(mem_buf_desc_t **p_desc_lst)
 		m_rx_hot_buffer->rx.hw_raw_timestamp = ntohll(cqe->timestamp);
 		m_rx_hot_buffer->rx.flow_tag_id = vma_get_flow_tag(cqe);
 
-		m_rx_hot_buffer->rx.is_sw_csum_need = !(m_b_is_rx_hw_csum_on && (cqe->hds_ip_ext & MLX5_CQE_L4_OK) && (cqe->hds_ip_ext & MLX5_CQE_L3_OK));
+		m_rx_hot_buffer->rx.is_sw_csum_need = !m_b_sysvar_no_csum && !(m_b_is_rx_hw_csum_on && (cqe->hds_ip_ext & MLX5_CQE_L4_OK) && (cqe->hds_ip_ext & MLX5_CQE_L3_OK));
 
 		if (unlikely(++m_qp_rec.debt >= (int)m_n_sysvar_rx_num_wr_to_post_recv)) {
 			(void)compensate_qp_poll_success(m_rx_hot_buffer);

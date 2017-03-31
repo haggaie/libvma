@@ -218,6 +218,7 @@ protected:
 	uint32_t		m_n_wce_counter;
 	bool			m_b_was_drained;
 	bool			m_b_is_rx_hw_csum_on;
+	const bool              m_b_sysvar_no_csum;
 	qp_rec			m_qp_rec;
 	const uint32_t		m_n_sysvar_cq_poll_batch_max;
 	const uint32_t		m_n_sysvar_progress_engine_wce_max;
